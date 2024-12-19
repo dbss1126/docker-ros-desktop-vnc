@@ -86,7 +86,7 @@ RUN wget https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg
 # Install ROS
 ENV ROS_DISTRO noetic
 # desktop or ros-base
-ARG INSTALL_PACKAGE=desktop
+ARG INSTALL_PACKAGE=desktop-full
 
 RUN apt-get update -q && \
     apt-get install -y curl gnupg2 lsb-release && \
@@ -115,6 +115,10 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
     ros-${ROS_DISTRO}-ros-ign-gazebo && \
     rm -rf /var/lib/apt/lists/*; \
     fi
+
+## install other tools
+RUN apt-get update -q && \
+    apt-get install -y tmux
 
 # Enable apt-get completion after running `apt-get update` in the container
 RUN rm /etc/apt/apt.conf.d/docker-clean
